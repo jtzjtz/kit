@@ -18,7 +18,7 @@ func JsonEncode(data interface{}) (jsonStr string) {
 // json bytes 转实体
 func JsonDecodeBytes(strBytes []byte, toEntity interface{}) error {
 	if len(strBytes) == 0 {
-		return error_n.NewError("jsonStr 不能为空")
+		return error_n.Error("jsonStr 不能为空")
 	}
 	var data interface{}
 	err := json.Unmarshal(strBytes, &data)

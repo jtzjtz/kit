@@ -1,14 +1,14 @@
 package error_n
 
-type Error struct {
+type ErrorN struct {
 	ErrStr string
 }
 
-func (e Error) Error() string {
+func (e ErrorN) Error() string {
 	return e.ErrStr
 }
 
 //生成一个新error
-func NewError(errStr string) Error {
-	return Error{ErrStr: errStr}
+func Error(errStr string) ErrorN {
+	return ErrorN{ErrStr: errStr}
 }
