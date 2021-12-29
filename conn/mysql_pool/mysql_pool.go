@@ -2,8 +2,9 @@ package mysql_pool
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func NewMySqlPool(o *Options) (*gorm.DB, error) {
@@ -11,16 +12,14 @@ func NewMySqlPool(o *Options) (*gorm.DB, error) {
 		return nil, err
 	}
 	dbConnStr := getDbConnStr(o.User, o.Pass, o.DataBase, o.Host, o.Port)
-	DB, err := gorm.Open("mysql", dbConnStr)
+	DB, err := gorm.Open(mysql.Open(dbConnStr))
+	//DB, err := gorm.Open("mysql", dbConnStr)
 	if err != nil {
 		fmt.Printf("mysql connection err=%v\n", err)
 	}
-
-	DB.SingularTable(true)
-	DB.LogMode(o.IsDebug)
-
-	DB.DB().SetMaxOpenConns(o.MaxCap)
-	DB.DB().SetMaxIdleConns(o.InitCap)
+	mysqlDB, err := DB.DB()
+	mysqlDB.SetMaxIdleConns(o.MaxCap)
+	mysqlDB.SetMaxIdleConns(o.InitCap)
 
 	return DB, nil
 }
